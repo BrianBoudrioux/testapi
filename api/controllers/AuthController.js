@@ -31,10 +31,19 @@ exports.register = function(req, res)
 {
     if (req.body.password && req.body.email)
     {
-        Users.create({ email: req.body.email, password: passwordHash.generate(req.body.password)}, function (err, user) {
-          if (err) res.json(err);
+        Users.findOne({email: req.body.email}, function(err, user) {
+            if (err) res.json(err);
+            else if (user == null) {
+                Users.create({ email: req.body.email, password: passwordHash.generate(req.body.password)}, function (err, user) {
+                  if (err) res.json(err);
+                  else
+                    res.json({created: true, message: "user sucessfully created", user: user})
+                });
+            }
+            else
+                res.json({authenticate: false, message: "A account allready exist for this email."});
 
-          res.json({created: true, message: "user sucessfully created", user: user})
+
         });
     }
     else
