@@ -1,0 +1,33 @@
+{
+  "name": "testapi",
+  "version": "1.0.0",
+  "description": "rest api with nodejs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BrianBoudrioux/testapi.git"
+  },
+  "keywords": [
+    "nodejs",
+    "api",
+    "rest",
+    "jwt"
+  ],
+  "author": "brian boudrioux",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BrianBoudrioux/testapi/issues"
+  },
+  "homepage": "https://github.com/BrianBoudrioux/testapi#readme",
+  "dependencies": {
+    "express": "^4.17.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.5.10",
+    "nodemon": "^1.19.0",
+    "password-hash": "^1.2.2"
+  }
+}
