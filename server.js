@@ -5,6 +5,10 @@ var express = require("express"),
     app = express();
 
 
+// import model
+var User = require('./api/models/userModel');
+
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -15,12 +19,15 @@ app.use(bodyParser.json());
 mongoose.connect('mongodb://localhost/testapi', {useNewUrlParser: true});
 
 // get the routes
-var authRoute = require("./api/config/routes/auth.js");
+var authRoute = require("./api/config/routes/auth");
 
 // instantiate the routes
 authRoute(app);
 
-
+// 404 trigger
+app.use(function(req, res) {
+  res.status(404).send({message: req.originalUrl + ' not found'})
+});
 
 // start the server
 app.listen(port, () => {

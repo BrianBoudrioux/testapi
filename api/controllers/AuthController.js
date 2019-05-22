@@ -1,17 +1,42 @@
 var mongoose = require("mongoose"),
     passwordHash = require("password-hash"),
     jwt = require("jsonwebtoken"),
-    config = require("../config/config.js");
-    // Users = mongoose.model("Users");
+    config = require("../config/config"),
+    Users = mongoose.model("User");
 
 
 exports.authenticate = function(req, res)
 {
     if (req.body.password && req.body.email)
     {
-        // Do somethings
-        res.json({message: "i will do somethings"});
+        Users.findOne({email: req.body.email}, function(err, user) {
+            if(err) res.json(err);
+
+            if (user != null) {
+                var check_pwd = passwordHash.verify(req.body.password, user.password);
+                if (check_pwd)
+                    res.json({authenticate: true, message: "sucessfully connected.", user: user});
+                else
+                    res.json({authenticate: false, message: "Please verify your email and password."})
+            }
+            else
+                res.json({authenticate: false, message: "Please verify your email and password."})
+        });
     }
     else
         res.json({authenticate: false, message: "You must define your email and your password for connect to this api."});
+}
+
+exports.register = function(req, res)
+{
+    if (req.body.password && req.body.email)
+    {
+        Users.create({ email: req.body.email, password: passwordHash.generate(req.body.password)}, function (err, user) {
+          if (err) res.json(err);
+
+          res.json({created: true, message: "user sucessfully created", user: user})
+        });
+    }
+    else
+        res.json({authenticate: false, message: "You must define your email and your password for create your account to this api."});
 }
